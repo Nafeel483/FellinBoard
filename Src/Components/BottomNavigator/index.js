@@ -51,7 +51,7 @@ class Bottom extends Component {
                 <Text style={{
                   fontSize: 10, color: navigatinUpdate == 1 ? Colors.buttonColor : "#C0BEBF",
                   marginTop: 5, textAlign: 'center'
-                }}>{'Home'}</Text>
+                }}>{'Feed'}</Text>
               </View>
 
             </TouchableOpacity>
@@ -77,7 +77,7 @@ class Bottom extends Component {
                   alignSelf: 'center',
 
                 }} />
-                <Text style={{ fontSize: 10, color: "#C0BEBF", marginTop: 10, textAlign: 'center' }}>{'Add New'}</Text>
+                <Text style={{ fontSize: 10, color: "#C0BEBF", marginTop: 10, textAlign: 'center' }}>{'Create'}</Text>
               </View>
 
             </TouchableOpacity>
@@ -92,7 +92,7 @@ class Bottom extends Component {
                 <Text style={{
                   fontSize: 10, color: navigatinUpdate == 3 ? Colors.buttonColor : "#C0BEBF",
                   marginTop: 5, textAlign: 'center'
-                }}>{'Challanges'}</Text>
+                }}>{'challange'}</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => this.updateValue(4)}>
@@ -106,7 +106,7 @@ class Bottom extends Component {
                 <Text style={{
                   fontSize: 10, color: navigatinUpdate == 4 ? Colors.buttonColor : "#C0BEBF",
                   marginTop: 5, textAlign: 'center'
-                }}>{'Profile'}</Text>
+                }}>{'Me'}</Text>
               </View>
             </TouchableOpacity>
 
