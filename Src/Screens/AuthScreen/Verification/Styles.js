@@ -35,5 +35,34 @@ const styles = StyleSheet.create({
     color: Colors.White
   },
 
+  emailWrapper: {
+    marginTop: 30,
+    flexDirection: 'row',
+    borderWidth: 1,
+    borderColor: Colors.White,
+    borderRadius: 12,
+    backgroundColor: Colors.White,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    width: widthScreen / 1.2,
+  },
+  emailInput: {
+    marginLeft: 20,
+    flex: 1,
+    fontSize: 17,
+  },
+  inputImage: {
+    width: 18,
+    height: 25,
+    marginLeft: 20,
+    // marginTop: 9
+  },
+  inputImageLock: {
+    width: 22,
+    height: 25,
+    marginLeft: 20,
+  },
 });
 export default styles;

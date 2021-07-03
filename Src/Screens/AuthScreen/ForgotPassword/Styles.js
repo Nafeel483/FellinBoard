@@ -36,8 +36,7 @@ const styles = StyleSheet.create({
   emailInput: {
     marginLeft: 20,
     flex: 1,
-    fontSize: 17,
-    margin: 10
+    fontSize: 17
   },
   inputImage: {
     width: 18,

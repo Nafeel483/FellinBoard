@@ -9,10 +9,16 @@ import {
   ScrollView
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import Toast from 'react-native-simple-toast';
+import { connect } from 'react-redux';
+import { forgotUser } from '../../../Redux/Actions/auth';
 import Styles from './Styles';
 import Images from '../../../Styles/Images';
 import Colors from '../../../Styles/Colors';
-import * as Constants from '../../../Constants'
+import * as Constants from '../../../Constants';
+import Loader from '../../../Components/Loader';
+
+const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 class ForgotPassword extends Component {
   constructor(props) {
@@ -22,8 +28,27 @@ class ForgotPassword extends Component {
     };
   }
 
+  submit = () => {
+    const { email } = this.state;
+    if (email === '') {
+      Toast.show('Email Is Required');
+    }
+    else if (reg.test(email) === false) {
+      Toast.show('Email is Invalid');
+    }
+    else {
+      const user = {
+        email: email,
+      };
+      this.props.forgotUsers(user);
+
+    }
+  }
+
   render() {
     const { email } = this.state
+    const { loadingforgot } = this.props.auth
+
     return (
       <>
 
@@ -47,7 +72,7 @@ class ForgotPassword extends Component {
               </View>
 
               {/* Login Button */}
-              <TouchableOpacity onPress={() => { this.props.navigation.navigate('Verification') }}>
+              <TouchableOpacity onPress={this.submit}>
                 <LinearGradient colors={['#B78D5F', '#C69A6B']}
                   style={Styles.buttonCreate}
                   start={{ x: 0, y: 0 }}
@@ -58,10 +83,24 @@ class ForgotPassword extends Component {
               </TouchableOpacity>
             </View>
           </ScrollView>
+          {loadingforgot ? <Loader /> : null}
         </ImageBackground>
 
       </>
     );
   }
 }
-export default ForgotPassword;
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    forgotUsers: (user) => dispatch(forgotUser(user)),
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ForgotPassword);

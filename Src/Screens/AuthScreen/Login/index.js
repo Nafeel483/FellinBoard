@@ -9,22 +9,51 @@ import {
   ScrollView
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import Toast from 'react-native-simple-toast';
 import Styles from './Styles';
+import { connect } from 'react-redux';
+import { loginUser } from '../../../Redux/Actions/auth';
 import Images from '../../../Styles/Images';
 import Colors from '../../../Styles/Colors';
-import * as Constants from '../../../Constants'
+import * as Constants from '../../../Constants';
+import Loader from '../../../Components/Loader';
+
+const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userName: '',
+      email: '',
       password: ''
     };
   }
 
+  submit = () => {
+    const { email, password } = this.state;
+    if (email === '') {
+      Toast.show('Email Is Required');
+    }
+    else if (reg.test(email) === false) {
+      Toast.show('Email is Invalid');
+    }
+    else if (password === '') {
+      Toast.show('Passowrd Is Required');
+    }
+    else {
+      const user = {
+        email: email,
+        password: password,
+      };
+      this.props.loginUsers(user);
+
+    }
+  }
+
   render() {
-    const { userName, password } = this.state
+    const { email, password } = this.state;
+    const { loadingLogin } = this.props.auth
     return (
       <>
 
@@ -37,12 +66,12 @@ class Login extends Component {
                 <Image source={Images.Username} style={Styles.inputImage} />
                 <TextInput
                   style={Styles.emailInput}
-                  value={userName}
-                  placeholder={'Username'}
+                  value={email}
+                  placeholder={'Email'}
                   placeholderTextColor={Colors.ok}
                   autoCapitalize='none'
                   onChangeText={(value) => {
-                    this.setState({ userName: value })
+                    this.setState({ email: value })
                   }}
                 />
               </View>
@@ -65,7 +94,7 @@ class Login extends Component {
                 </TouchableOpacity>
               </View>
               {/* Login Button */}
-              <TouchableOpacity onPress={() => { this.props.navigation.navigate('Home') }}>
+              <TouchableOpacity onPress={this.submit}>
                 <LinearGradient colors={['#B78D5F', '#C69A6B']}
                   style={Styles.buttonCreate}
                   start={{ x: 0, y: 0 }}
@@ -107,10 +136,24 @@ class Login extends Component {
               </TouchableOpacity>
             </View>
           </ScrollView>
+          {loadingLogin ? <Loader /> : null}
         </ImageBackground>
 
       </>
     );
   }
 }
-export default Login;
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loginUsers: (user) => dispatch(loginUser(user)),
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);

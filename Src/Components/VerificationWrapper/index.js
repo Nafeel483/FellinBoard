@@ -42,6 +42,7 @@ class Verification extends Component {
             maxLength={1}
             onChangeText={value => {
               this.setState({ pin1: value })
+              this.props.value1(value)
               this.pin2ref.current?.focus();
             }}
           />
@@ -54,6 +55,7 @@ class Verification extends Component {
             maxLength={1}
             onChangeText={value => {
               this.setState({ pin2: value })
+              this.props.value2(value)
               this.pin3ref.current?.focus();
             }}
           />
@@ -66,6 +68,7 @@ class Verification extends Component {
             maxLength={1}
             onChangeText={value => {
               this.setState({ pin3: value })
+              this.props.value3(value)
               this.pin4ref.current?.focus();
             }}
           />
@@ -78,6 +81,7 @@ class Verification extends Component {
             maxLength={1}
             onChangeText={value => {
               this.setState({ pin4: value })
+              this.props.value4(value)
               this.pin5ref.current?.focus();
             }}
           />
@@ -90,6 +94,7 @@ class Verification extends Component {
             maxLength={1}
             onChangeText={value => {
               this.setState({ pin5: value }),
+              this.props.value5(value)
                 this.pin6ref.current?.focus();
             }}
           />
@@ -102,6 +107,7 @@ class Verification extends Component {
             maxLength={1}
             onChangeText={value => {
               this.setState({ pin6: value })
+              this.props.value6(value)
             }}
           />
 

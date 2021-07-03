@@ -70,10 +70,11 @@ class Bottom extends Component {
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => { this.props.navigation.navigate('AddNew') }}>
-              <View style={{ marginTop: -60,marginLeft:30 }}>
+              <View style={{ marginTop: -60, marginLeft: 30 }}>
 
                 <Image source={Images.Plus} style={{
                   width: 70, height: 70,
+                  marginLeft: -10,
                   alignSelf: 'center',
 
                 }} />

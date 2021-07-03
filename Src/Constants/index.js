@@ -1,3 +1,5 @@
+export const BASE_URL = "http://shielded-earth-62504.herokuapp.com/api/v1"
+
 export const FORGOT = 'Forgot?'
 export const SIGNIN = 'Sign in'
 export const OR = 'Or Login Using'

@@ -37,7 +37,6 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     flex: 1,
     fontSize: 17,
-    margin: 10
   },
   inputImage: {
     width: 18,

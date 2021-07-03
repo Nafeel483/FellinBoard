@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   },
   bottomContainerWrapper: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     width: '90%',
     alignSelf: 'center',
     // height: 50,

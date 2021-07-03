@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import RootNavigation from './Navigation/RootNavigation';
+import * as NavigationService from './Components/Services/NavigationService';
 
 console.disableYellowBox = true;
 
 class Root extends Component {
+  componentDidMount() {
+    NavigationService.setNavigator(this.navigator);
+  }
   render() {
     return (
       <>
         <View style={{ flex: 1 }}>
-          <RootNavigation />
+          <RootNavigation
+            ref={nav => {
+              this.navigator = nav;
+            }}
+          />
         </View>
       </>
     );

@@ -8,25 +8,68 @@ import {
   TouchableOpacity,
   ScrollView
 } from 'react-native';
+import { connect } from 'react-redux';
+import { registerUser } from '../../../Redux/Actions/auth';
+import Toast from 'react-native-simple-toast';
 import LinearGradient from 'react-native-linear-gradient';
 import Styles from './Styles';
 import Images from '../../../Styles/Images';
 import Colors from '../../../Styles/Colors';
 import * as Constants from '../../../Constants'
+import Loader from '../../../Components/Loader';
+
+const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userName: '',
-      password: '',
-      confirm_password: '',
-      fullName: '',
-      email: ''
+      userName: "",
+      password: "",
+      confirm_password: "",
+      fullName: "",
+      email: ""
     };
   }
 
+  submit = () => {
+    const { email, fullName, confirm_password, password, userName } = this.state;
+    if (fullName === '') {
+      Toast.show('Full Name Is Required');
+    }
+    else if (userName === '') {
+      Toast.show('User Name Is Required');
+    }
+    else if (email === '') {
+      Toast.show('Email Is Required');
+    }
+    else if (reg.test(email) === false) {
+      Toast.show('Email is Invalid');
+    }
+    else if (password === '') {
+      Toast.show('Passowrd Is Required');
+    }
+    else if (confirm_password === '') {
+      Toast.show('Confirm Password Is Required');
+    }
+    else if (password != confirm_password) {
+      Toast.show('Passowrd Not Matched');
+    }
+    else {
+      const user = {
+        name: fullName,
+        username: userName,
+        email: email,
+        password: password,
+        confirmPassword: confirm_password,
+      };
+      this.props.registerUsers(user);
+
+    }
+  }
+
   render() {
+    const { loadingReducer } = this.props.auth
     const { userName, password, confirm_password, fullName, email } = this.state
     return (
       <>
@@ -63,7 +106,7 @@ class SignUp extends Component {
                   }}
                 />
               </View>
-              {/* UserName */}
+              {/* Email */}
               <View style={Styles.emailWrapper}>
                 <Image source={Images.Username} style={Styles.inputImage} />
                 <TextInput
@@ -108,7 +151,7 @@ class SignUp extends Component {
                 />
               </View>
               {/* Login Button */}
-              <TouchableOpacity onPress={() => { this.props.navigation.navigate('') }}>
+              <TouchableOpacity onPress={this.submit}>
                 <LinearGradient colors={['#B78D5F', '#C69A6B']}
                   style={Styles.buttonCreate}
                   start={{ x: 0, y: 0 }}
@@ -150,10 +193,24 @@ class SignUp extends Component {
               </TouchableOpacity>
             </View>
           </ScrollView>
+          {loadingReducer ? <Loader /> : null}
         </ImageBackground>
 
       </>
     );
   }
 }
-export default SignUp;
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    registerUsers: (user) => dispatch(registerUser(user)),
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SignUp);
