@@ -4,6 +4,7 @@ import { types } from '../../Types/auth';
 import { login, register, forgot, verification } from './api';
 import * as  NavigationService from '../../../Components/Services/NavigationService';
 import Toast from 'react-native-simple-toast';
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 function* loginUser(action) {
@@ -12,9 +13,9 @@ function* loginUser(action) {
     console.log('result Response', result)
     if (result.status === 200) {
       yield put({ type: types.LOGIN_SUCCESS, payload: result.message });
-      Toast.show(result.message.message);
+    
+      saveUserData(result.message)
 
-      NavigationService.navigate('Home');
     }
     else {
       yield put({ type: types.LOGIN_FAILURE, payload: result.message });
@@ -31,6 +32,25 @@ function* loginUser(action) {
     console.log("The Error", error);
   }
 }
+
+const saveUserData = async (res) => {
+  try {
+    //we want to wait for the Promise returned by AsyncStorage.setItem()
+    //to be resolved to the actual value before returning the value
+    await AsyncStorage.setItem('token', res.token)
+  } catch (error) {
+  }
+  try {
+    //we want to wait for the Promise returned by AsyncStorage.setItem()
+    //to be resolved to the actual value before returning the value
+    const jsonValue = JSON.stringify(res.user)
+    await AsyncStorage.setItem('user', jsonValue)
+  } catch (error) {
+  }
+  NavigationService.navigate('Home');
+  Toast.show(res.message);
+}
+
 
 
 function* registerUser(action) {

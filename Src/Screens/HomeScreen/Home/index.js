@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   ScrollView
 } from 'react-native';
+import { connect } from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SafeAreaView from 'react-native-safe-area-view';
@@ -17,6 +19,9 @@ import Colors from '../../../Styles/Colors';
 import * as Constants from '../../../Constants'
 import BottomWrapper from '../../../Components/BottomNavigator';
 import HomeList from '../../../Components/HomeList';
+import { getUser } from '../../../Redux/Actions/profile';
+import Loader from '../../../Components/Loader';
+
 
 class Home extends Component {
   constructor(props) {
@@ -46,9 +51,26 @@ class Home extends Component {
       ]
     };
   }
+  componentDidMount = async () => {
+    let user_token = await AsyncStorage.getItem('token')
+    this.props.getUsers(user_token);
+  }
+
+
+  logoutCall = async () => {
+    try {
+      //we want to wait for the Promise returned by AsyncStorage.setItem()
+      //to be resolved to the actual value before returning the value
+      await AsyncStorage.setItem('token', 'null')
+      this.props.navigation.navigate('Login')
+    } catch (error) {
+    }
+  }
 
   render() {
     const { search, homeData } = this.state
+
+    const { loadingProfile } = this.props.getprofile
     return (
       <>
         <SafeAreaProvider>
@@ -60,9 +82,14 @@ class Home extends Component {
               end={{ x: 0, y: 2.5 }}
             >
               <View style={Styles.mainWrapper1}>
-                <TouchableOpacity>
-                  <Image source={Images.Menu} style={Styles.menuImage} />
-                </TouchableOpacity>
+                <View style={Styles.headerWrapperShow}>
+                  <TouchableOpacity>
+                    <Image source={Images.Menu} style={Styles.menuImage} />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={this.logoutCall}>
+                    <Image source={Images.logout} style={Styles.menuImage} />
+                  </TouchableOpacity>
+                </View>
 
                 <Text style={Styles.headerText}>{Constants.DISCOVER}</Text>
                 <Text style={Styles.headerTextDescription}>{Constants.DISCOVER_DESCRIPTION}</Text>
@@ -113,10 +140,25 @@ class Home extends Component {
                 page={1}
               />
             </LinearGradient>
+            {loadingProfile ? <Loader /> : null}
           </SafeAreaView>
         </SafeAreaProvider>
       </>
     );
   }
 }
-export default Home;
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth,
+    getprofile: state.getprofile
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getUsers: (user) => dispatch(getUser(user)),
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);

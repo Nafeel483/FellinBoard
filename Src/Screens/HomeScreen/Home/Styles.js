@@ -91,6 +91,10 @@ const styles = StyleSheet.create({
   filterImage: {
     width: 30,
     height: 30,
+  },
+  headerWrapperShow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   }
 });
 export default styles;

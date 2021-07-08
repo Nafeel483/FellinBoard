@@ -43,7 +43,7 @@ class Loading extends Component {
           <Animated.Image
             style={{
               width: 35,
-              height: 40,
+              height: 45,
               tintColor:'white',
               transform: [{ rotate: RotateData }],
             }}

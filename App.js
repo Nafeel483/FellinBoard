@@ -16,8 +16,7 @@ import Loading from './Src/Components/Loader'
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['auth', 'FellinMoodBoard', 'profile'],
-  timeout: null,
+  blacklist: []
 }
 const sagaMiddleware = creatSagaMiddleware();
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -29,7 +28,7 @@ const App = () => {
   return (
     <>
       <Provider store={store}  >
-        <PersistGate loading={<Loading />} persistor={persistedStore}>
+        <PersistGate persistor={persistedStore}>
           <Root />
         </PersistGate>
       </Provider>

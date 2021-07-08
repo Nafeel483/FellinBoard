@@ -54,6 +54,7 @@ const images = {
   listChair: require('../assests/HomeProducts/listChair.png'),
   listChair1: require('../assests/HomeProducts/listChair1.png'),
   chalangeShow: require('../assests/HomeProducts/chalangeShow.png'),
+  logout: require('../assests/HomeProducts/logout.png'),
 
 
   Plus_menu: require('../assests/AddNew/Plus_menu.png'),
