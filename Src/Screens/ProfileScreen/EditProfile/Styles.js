@@ -23,6 +23,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
+  profileArea: {
+    marginTop: '-17%',
+    width: '50%',
+    height: 200,
+    alignSelf: 'center',
+    alignItems: 'center'
+  },
   profileMainPicture: {
     alignSelf: 'center',
     width: 150,
@@ -30,11 +37,32 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     // borderWidth: 2,
     // borderColor: Colors.White,
-    marginTop: '-17%'
+
+  },
+  profileMainPicture1: {
+    alignSelf: 'center',
+    width: 115,
+    height: 115,
+    borderRadius: 15,
+  },
+  editIcon: {
+    alignSelf: 'center',
+    width: 30,
+    height: 30,
+    marginTop: -40,
+    marginLeft: '50%'
+  },
+  editIcon1: {
+    alignSelf: 'center',
+    width: 30,
+    height: 30,
+    marginTop: -30,
+    marginLeft: '50%',
+    tintColor: 'white'
   },
   mainWrapper: {
-    marginTop: 20,
-    marginBottom: 20,
+    marginTop: -40,
+    marginBottom: 30,
     width: widthScreen / 1.12,
     alignSelf: "center"
   },
@@ -55,6 +83,25 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     flex: 1,
     fontSize: 17,
+  },
+  inputImageLock: {
+    width: 22,
+    height: 25,
+    marginRight: 20,
+  },
+  buttonCreate: {
+    marginTop: 30,
+    width: widthScreen / 1.2,
+    alignSelf: 'center',
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 12,
+  },
+  buttonText: {
+    fontSize: 18,
+    fontWeight: '500',
+    color: Colors.White
   },
 });
 export default styles;

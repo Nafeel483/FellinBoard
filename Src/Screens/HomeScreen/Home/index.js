@@ -51,10 +51,10 @@ class Home extends Component {
       ]
     };
   }
-  componentDidMount = async () => {
-    let user_token = await AsyncStorage.getItem('token')
-    this.props.getUsers(user_token);
-  }
+  // componentDidMount = async () => {
+  //   let user_token = await AsyncStorage.getItem('token')
+  //   this.props.getUsers(user_token);
+  // }
 
 
   logoutCall = async () => {
@@ -70,7 +70,6 @@ class Home extends Component {
   render() {
     const { search, homeData } = this.state
 
-    const { loadingProfile } = this.props.getprofile
     return (
       <>
         <SafeAreaProvider>
@@ -140,7 +139,6 @@ class Home extends Component {
                 page={1}
               />
             </LinearGradient>
-            {loadingProfile ? <Loader /> : null}
           </SafeAreaView>
         </SafeAreaProvider>
       </>

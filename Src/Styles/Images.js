@@ -47,6 +47,9 @@ const images = {
 
   editBackground: require('../assests/Profile/editBackground.png'),
 
+  password: require('../assests/Profile/password.png'),
+  passwordInvisible: require('../assests/Profile/passwordInvisible.png'),
+  editIcon: require('../assests/Profile/editIcon.png'),
 
   // Home Products
   carpet: require('../assests/HomeProducts/carpet.png'),

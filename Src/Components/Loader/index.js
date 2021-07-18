@@ -19,6 +19,7 @@ class Loading extends Component {
 
     Animated.timing(this.RotateValueHolder, {
       toValue: 1,
+      useNativeDriver: true,
       duration: 3000,
       easing: Easing.linear,
     }).start(() => this.StartImageRotateFunction());

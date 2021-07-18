@@ -25,9 +25,28 @@ const profileReducer = (state = initialState, action) => {
         loadingProfile: false,
       };
 
-      default: {
-        return { ...state };
-      }
+    // UpdateProfile
+    case types.UPDATEPROFILE_REQUEST:
+      return {
+        ...state,
+        loadingUpdateProfile: true,
+      };
+    case types.UPDATEPROFILE_SUCCESS:
+      return {
+        ...state,
+        UpdateProfile: action.payload,
+        loadingUpdateProfile: false,
+      };
+    case types.UPDATEPROFILE_FAILURE:
+      return {
+        ...state,
+        loadingUpdateProfile: false,
+      };
+
+
+    default: {
+      return { ...state };
+    }
   }
 
 }

@@ -17,6 +17,8 @@ import Images from '../../../Styles/Images';
 import Colors from '../../../Styles/Colors';
 import * as Constants from '../../../Constants';
 import Loader from '../../../Components/Loader';
+import AsyncStorage from '@react-native-community/async-storage';
+
 
 const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
@@ -46,8 +48,17 @@ class Login extends Component {
         email: email,
         password: password,
       };
+      this.savePassword(password)
       this.props.loginUsers(user);
 
+    }
+  }
+  savePassword = async (password) => {
+    try {
+      //we want to wait for the Promise returned by AsyncStorage.setItem()
+      //to be resolved to the actual value before returning the value
+      await AsyncStorage.setItem('password', password)
+    } catch (error) {
     }
   }
 

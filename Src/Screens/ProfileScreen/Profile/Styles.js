@@ -24,6 +24,13 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginTop: '-17%'
   },
+  profileMainPicture1: {
+    alignSelf: 'center',
+    width: 115,
+    height: 115,
+    borderRadius: 15,
+    marginTop: '-17%'
+  },
   profileHeaderText: {
     textAlign: 'center',
     fontSize: 25,

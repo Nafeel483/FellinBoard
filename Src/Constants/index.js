@@ -2,6 +2,7 @@ export const BASE_URL = "http://shielded-earth-62504.herokuapp.com/api/v1"
 
 export const FORGOT = 'Forgot?'
 export const SIGNIN = 'Sign in'
+export const SAVE_PROFILE = "Save"
 export const OR = 'Or Login Using'
 export const OR_SIGNUP = 'Or Signup Using'
 export const NO_ACCOUNT = "Don't have an account"

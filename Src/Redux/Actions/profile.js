@@ -6,3 +6,10 @@ export function getUser(user) {
       payload: user
     };
   }
+
+  export function updateUser(user) {
+    return {
+      type: types.UPDATEPROFILE_REQUEST,
+      payload: user
+    };
+  }

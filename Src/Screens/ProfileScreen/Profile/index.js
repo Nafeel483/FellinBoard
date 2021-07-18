@@ -15,6 +15,7 @@ import {
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu';
+import AsyncStorage from '@react-native-community/async-storage';
 import { connect } from 'react-redux';
 import Styles from './Styles';
 import Images from '../../../Styles/Images';
@@ -22,27 +23,36 @@ import Colors from '../../../Styles/Colors';
 import * as Constants from '../../../Constants'
 import BottomWrapper from '../../../Components/BottomNavigator';
 import Events from '../../../Components/Events';
+import { getUser } from '../../../Redux/Actions/profile';
+import Loader from '../../../Components/Loader';
+
 
 class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
       tabChangeValue: 1,
-      name: ''
     };
   }
-  componentDidMount = () => {
-    let userData = this.props.getprofile?.userProfile?.data
-    this.setState({
-      name: userData?.name
+  async componentDidMount() {
+    const { navigation } = this.props;
+    this.focusListener = this.props.navigation.addListener('didFocus', async () => {
+      let user_token = await AsyncStorage.getItem('token')
+      this.props.getUsers(user_token);
     })
+    let user_token = await AsyncStorage.getItem('token')
+    this.props.getUsers(user_token);
   }
-
+  componentWillUnmount() {
+    this.focusListener.remove()
+  }
   tabChange = (value) => {
     this.setState({ tabChangeValue: value })
   }
   render() {
     const { tabChangeValue, name } = this.state
+    const { loadingProfile } = this.props.getprofile
+    let userData = this.props.getprofile?.userProfile?.data
     return (
       <>
         <MenuProvider>
@@ -81,12 +91,17 @@ class Profile extends Component {
                 </Menu>
               </View>
             </ImageBackground>
-            <TouchableOpacity>
-              <Image source={Images.ProfileMain} style={Styles.profileMainPicture} />
+            <TouchableOpacity onPress={() => { this.props.navigation.navigate('EditProfile') }}>
+              {
+                userData?.photo ?
+                  <Image source={{ uri: userData?.photo }} style={Styles.profileMainPicture1} />
+                  :
+                  <Image source={Images.ProfileMain} style={Styles.profileMainPicture} />
+              }
             </TouchableOpacity>
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={Styles.imagesWrapper}>
-                <Text style={Styles.profileHeaderText}>{name}</Text>
+                <Text style={Styles.profileHeaderText}>{userData?.name}</Text>
                 <View style={Styles.locationWrapper}>
                   <Image source={Images.Location} style={{ width: 17, height: 17 }} />
                   <Text style={Styles.locationText}>{'San fransisco, CIO'.toUpperCase()}</Text>
@@ -131,6 +146,8 @@ class Profile extends Component {
                 <Events />
               </View>
             </ScrollView>
+
+            {loadingProfile ? <Loader /> : null}
             <BottomWrapper
               navigation={this.props.navigation}
               page={4}
@@ -149,7 +166,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-
+    getUsers: (user) => dispatch(getUser(user)),
   };
 };
 export default connect(
