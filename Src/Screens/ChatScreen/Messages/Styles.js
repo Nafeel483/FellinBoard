@@ -79,5 +79,11 @@ const styles = StyleSheet.create({
     color: '#009A22',
     marginTop: 5
   },
+  profileRate1: {
+    fontSize: 16,
+    fontWeight: '400',
+    color: Colors.primary,
+    marginTop: 5
+  },
 });
 export default styles;

@@ -10,122 +10,104 @@ import {
 } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SafeAreaView from 'react-native-safe-area-view';
+import AsyncStorage from '@react-native-community/async-storage';
+import { connect } from 'react-redux';
+import { getUserConversation } from '../../../Redux/Actions/chat';
 import Styles from './Styles';
 import Images from '../../../Styles/Images';
 import Colors from '../../../Styles/Colors';
+import io from "socket.io-client";
 import * as Constants from '../../../Constants';
 import { ShowChatMessages } from '../../../Components/ChatMessages';
+
+let SERVER = 'https://shielded-earth-62504.herokuapp.com'
 
 class Message extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       search: '',
       chatmessagesss: '',
-      chatmessage: [
-        {
-          id: `1`,
-          type: 'text',
-          message: 'Hello',
-          content: 'hello world',
-          targetId: '12345678',
-
-          renderTime: true,
-          sendStatus: 0,
-          time: '1542006036549'
-        },
-        {
-          id: `2`,
-          type: 'text',
-          message: 'Where?',
-          content: 'hi/{se}',
-          targetId: '12345678',
-
-          renderTime: true,
-          sendStatus: 0,
-          time: '1542106036549'
-        },
-
-        {
-          id: `4`,
-          type: 'text',
-          message: 'Nice to meet you',
-          content: '你好/{weixiao}',
-          targetId: '88886666',
-
-          renderTime: true,
-          sendStatus: -2,
-          time: '1542177036549'
-        },
-        {
-          id: `5`,
-          type: 'voice',
-          message: 'Thanks for time',
-          content: {
-            uri: 'http://m10.music.126.net/20190810141311/78bf2f6e1080052bc0259afa91cf030d/ymusic/d60e/d53a/a031/1578f4093912b3c1f41a0bfd6c10115d.mp3',
-            length: 10
-          },
-          targetId: '12345678',
-
-          renderTime: true,
-          sendStatus: 1,
-          time: '1542260667161'
-        },
-        {
-          id: `6`,
-          type: 'voice',
-          message: 'Hello',
-          content: {
-            uri: 'http://m10.music.126.net/20190810141311/78bf2f6e1080052bc0259afa91cf030d/ymusic/d60e/d53a/a031/1578f4093912b3c1f41a0bfd6c10115d.mp3',
-            length: 30
-          },
-          targetId: '88886666',
-
-          renderTime: true,
-          sendStatus: 0,
-          time: '1542264667161'
-        },
-        {
-          id: `2`,
-          type: 'voice',
-          message: "Sorry , I'm stuck in traffic. Please give me a moment.",
-          content: {
-            uri: 'http://m10.music.126.net/20190810141311/78bf2f6e1080052bc0259afa91cf030d/ymusic/d60e/d53a/a031/1578f4093912b3c1f41a0bfd6c10115d.mp3',
-            length: 30
-          },
-          targetId: '88886666',
-
-          renderTime: true,
-          sendStatus: 0,
-          time: '1542264667161'
-        },
-      ],
-      Opposite: [
-        {
-          id: `1`,
-          type: 'text',
-          message: 'Hello',
-          content: 'hello world',
-          targetId: '12345678',
-          userAvatar: Images.profile,
-          fullName: 'Micke',
-          nickName: 'Test',
-          renderTime: true,
-          sendStatus: 0,
-          time: '1542006036549'
-        }
-      ],
+      senderId: '',
+      recieverData: null,
+      token: '',
+      chatID: ''
     };
   }
   saveData = () => {
-    if (this.state.chatmessagesss == '') {
-    }
-    else {
-      this.setState({ chatmessagesss: '' })
-    }
+    const { token, chatID, chatmessagesss } = this.state
+    this.connect(chatmessagesss)
+
+    this.setState({ chatmessagesss: '' })
+    // return () => {
+    //   socket.disconnect()
+    //   socket.close()
+    // }
   }
+
+  componentDidMount = async () => {
+
+    let user_token = await AsyncStorage.getItem('token')
+
+    const { params } = this.props.navigation.state;
+    const user = params.user;
+    let data = {
+      token: user_token,
+      id: user?._id
+    }
+    this.setState({
+      senderId: user?.sender?._id,
+      recieverData: user?.receiver,
+      token: user_token,
+      chatID: user?._id
+    })
+    this.props.setUserConversation(data)
+
+  }
+  // componentWillUpdate = (nextProps) => {
+  //   const { token, chatID } = this.state
+  //   let data = {
+  //     token: token,
+  //     id: chatID
+  //   }
+  //   nextProps.setUserConversation(data)
+  // }
+  connect = (chat) => {
+    const to = this.state.recieverData?._id
+    const { token, chatID } = this.state
+    this.socket = io(SERVER, {
+      transports: ['websocket'], upgrade: false,
+      query: {
+        token
+      }
+    });
+    return new Promise((resolve) => {
+      resolve(this.socket);
+      console.log("YEs Resolved", this.socket)
+      if (to) {
+
+        // socket.emit('TYPING_START', { recieverId: to })
+
+        // socket.emit('TYPING_END', { recieverId: to })
+        this.socket.emit('SEND_MESSAGE', { recieverId: to, message: chat })
+
+      }
+    });
+  };
+
+
+
+  sendingMessage = (value) => {
+    this.setState({ chatmessagesss: value })
+  }
+
+
   render() {
-    const { chatmessagesss, chatmessage, Opposite } = this.state
+    const { chatmessagesss, recieverData, Opposite, senderId } = this.state
+
+    const { loadingConversation } = this.props.allChats
+    const userCOnversations = this.props.allChats?.userConversation?.data
     return (
       <>
         <SafeAreaProvider>
@@ -146,8 +128,8 @@ class Message extends Component {
                 <View style={Styles.profileContainer}>
                   <Image source={Images.imageProfile} style={Styles.profileShow} />
                   <View style={{ marginLeft: 15 }}>
-                    <Text style={Styles.profileName}>{'Ridhwan Nordin'}</Text>
-                    <Text style={Styles.profileRate}>{"Online"}</Text>
+                    <Text style={Styles.profileName}>{recieverData?.name}</Text>
+                    <Text style={recieverData?.isOnline ? Styles.profileRate : Styles.profileRate1}>{recieverData?.isOnline ? "Online" : "Ofline"}</Text>
                   </View>
                 </View>
                 {/* Ends */}
@@ -160,8 +142,8 @@ class Message extends Component {
                 backgroundColor: '#F7F8FA',
                 marginTop: 20, marginBottom: 20, width: '95%', alignSelf: 'center'
               }}>
-                {chatmessage && chatmessage.map((showmessage) => (
-                  <ShowChatMessages showmessage={showmessage} key={showmessage.id} userId={showmessage.id} oppositeUser={Opposite} />
+                {userCOnversations?.length > 0 && userCOnversations.map((showmessage) => (
+                  <ShowChatMessages showmessage={showmessage} key={showmessage._id} userId={senderId == showmessage.sender ? false : true} oppositeUser={Opposite} />
                 ))}
               </View>
 
@@ -178,7 +160,7 @@ class Message extends Component {
                     placeholderTextColor={Colors.primary}
                     autoCapitalize='none'
                     onChangeText={(value) => {
-                      this.setState({ chatmessagesss: value })
+                      this.sendingMessage(value)
                     }}
                   />
                   <TouchableOpacity>
@@ -197,4 +179,17 @@ class Message extends Component {
     );
   }
 }
-export default Message;
+const mapStateToProps = (state) => {
+  return {
+    allChats: state.allChats,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setUserConversation: (user) => dispatch(getUserConversation(user)),
+  };
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Message);

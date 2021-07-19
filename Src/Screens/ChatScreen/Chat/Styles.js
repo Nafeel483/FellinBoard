@@ -117,6 +117,12 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     marginTop: 5
   },
+  loadingRate: {
+    fontSize: 17,
+    fontWeight: '400',
+    color: Colors.primary,
+    textAlign: 'center'
+  },
   timeStyle: {
     fontSize: 16,
     fontWeight: '500',
@@ -132,6 +138,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     opacity: 0.1,
     marginTop: 10
+  },
+  mainOnline: {
+    width: 13,
+    height: 13,
+    backgroundColor: 'green',
+    borderRadius: 13,
+    right: 0,
+    top: 0,
+    position: 'absolute'
   }
 });
 export default styles;

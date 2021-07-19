@@ -15,7 +15,7 @@ import Images from '../../Styles/Images';
 export const ShowChatMessages = ({ showmessage, userId, oppositeUser }) => {
   const { message, chatInfoavatar } = showmessage;
   var date = new Date()
-  const recieved = userId != 2;
+  const recieved = userId;
 
   return <View style={recieved ? styles.receivedWrapper : styles.chatMessageWrapper}>
     <View style={recieved ? styles.receivedInnerWrapper : styles.chatMessageInner}>
@@ -27,8 +27,8 @@ export const ShowChatMessages = ({ showmessage, userId, oppositeUser }) => {
               flexDirection: 'row',
               marginLeft: 5,
             }}>
-              <Image source={Images.check} style={styles.ImageChecing} />
-              <Image source={Images.check} style={styles.ImageChecing} />
+              <Image source={Images?.check} style={styles.ImageChecing} />
+              <Image source={Images?.check} style={styles.ImageChecing} />
             </View>
           </View>
           :
@@ -36,16 +36,13 @@ export const ShowChatMessages = ({ showmessage, userId, oppositeUser }) => {
             flexDirection: 'row',
             marginLeft: '60%'
           }}>
-            <Image source={Images.check} style={styles.ImageChecing} />
+            <Image source={Images?.check} style={styles.ImageChecing} />
             {/* <Text style={styles.textName1}>{"Dr, José"}</Text> */}
           </View>
         }
       </View>
 
-      {chatInfoavatar ?
-        <View style={recieved ? styles.chatMessageHeaderImage : styles.chatMessageHeaderImage1}>
-          <Image source={chatInfoavatar ? chatInfoavatar : Images.video1} style={styles.ImageContainer} />
-        </View> :
+    
         <>
           <View style={recieved ? styles.chatMessageHeaderText : styles.chatMessageHeaderText1}>
             <Text style={{ color: recieved ? 'white' : 'black', margin: 10 }}>{message}</Text>
@@ -53,7 +50,6 @@ export const ShowChatMessages = ({ showmessage, userId, oppositeUser }) => {
 
           </View>
         </>
-      }
     </View>
   </View >
 

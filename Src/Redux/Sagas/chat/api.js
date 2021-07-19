@@ -1,6 +1,6 @@
 import * as CONSTANTS from '../../../Constants';
 
-export function* getProfile(userToken) {
+export function* getChats(userToken) {
   console.log("Get Profile JWT TOKEN", userToken)
   const opt = {
     method: 'get',
@@ -11,30 +11,23 @@ export function* getProfile(userToken) {
     },
 
   }
-  const response = yield fetch(`${CONSTANTS.BASE_URL}/user/profile`, opt);
+  const response = yield fetch(`${CONSTANTS.BASE_URL}/chat/rooms`, opt);
   const message = yield response.json();
   return yield ({ status: response.status, message })
 }
 
-
-export function* updateProfile(user) {
-  const data = new URLSearchParams();
-  data.append('name', user.name)
-  data.append('username', user.username)
-  data.append('photo', user.photo)
-
+// getCoversation
+export function* getCoversation(user) {
   const opt = {
-    method: 'PATCH',
+    method: 'get',
     headers: {
       Accept: 'application/json',
-      "Content-Type": 'application/x-www-form-urlencoded',
       'Authorization': 'Bearer ' + user?.token,
       // token: userToken
     },
-    body: data.toString(),
-    json: true,
+
   }
-  const response = yield fetch(`${CONSTANTS.BASE_URL}/user/profile/${user?.userID}`, opt);
+  const response = yield fetch(`${CONSTANTS.BASE_URL}/chat/conversation/${user?.id}?offset=0&limit=30`, opt);
   const message = yield response.json();
   return yield ({ status: response.status, message })
 }

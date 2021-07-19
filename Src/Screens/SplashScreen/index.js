@@ -19,8 +19,8 @@ class SplashScreen extends Component {
   componentDidMount = () => {
     setTimeout(() => {
       if (!this.moved) {
-        // this.props.navigation.navigate('Login')
-        this.showData()
+        this.props.navigation.navigate('Login')
+        // this.showData()
       }
     }, 3000);
   }

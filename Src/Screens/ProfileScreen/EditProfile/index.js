@@ -131,7 +131,6 @@ class EditProfile extends Component {
     const params = {
       userID: userID,
       name: fullName,
-      password: password,
       username: address,
       photo: photo,
       token: user_token
@@ -230,6 +229,7 @@ class EditProfile extends Component {
                     <TextInput
                       style={Styles.emailInput}
                       value={password}
+                      editable={false}
                       secureTextEntry={this.state.passwordVisible == 1 ? true : false}
                       placeholder={'Password'}
                       placeholderTextColor={Colors.ok}
