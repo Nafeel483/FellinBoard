@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface MoodBoardProjectTests : XCTestCase
+@interface FellinTests : XCTestCase
 
 @end
 
-@implementation MoodBoardProjectTests
+@implementation FellinTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL(^)(UIView *view))test
 {

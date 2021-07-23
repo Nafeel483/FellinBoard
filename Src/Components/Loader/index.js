@@ -48,7 +48,7 @@ class Loading extends Component {
               tintColor:'white',
               transform: [{ rotate: RotateData }],
             }}
-            source={Images.Logo}
+            source={Images.loaderShow}
           />
         </View>
       </View>

@@ -6,6 +6,7 @@ const images = {
   Facebook: require('../assests/Facebook.png'),
   Google: require('../assests/Google.png'),
   userChat: require('../assests/userChat.png'),
+  loaderShow: require('../assests/loaderShow.png'),
 
   // Bottom Icons
   Chat: require('../assests/BottomTab/Chat.png'),
